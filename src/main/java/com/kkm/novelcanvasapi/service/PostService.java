@@ -18,8 +18,8 @@ public class PostService {
 
     public Mono<Post> savePost(Post post){return this.postRepository.save(post);}
 
-    public Flux<PostWithDetails> getPosts(Pageable pageable, boolean published) {
-        return this.postRepository.findAllByPublishedOrderByCreatedAtDesc(pageable, published)
+    public Flux<PostWithDetails> getPosts(Pageable pageable, String category, String username, String title, boolean published) {
+        return this.postRepository.findAllByCategoryAndPublishedAndUsernameOrTitle(pageable, category, username, title, published)
                 .concatMap(post -> {
                     PostWithDetails postWithDetails = PostWithDetails.fromPost(post);
                     postWithDetails.setViewCount(0L);
@@ -30,8 +30,8 @@ public class PostService {
     }
 
 
-    public Mono<Long> countPosts(boolean published){
-        return postRepository.countByPublished(published);
+    public Mono<Long> countPosts(String category, String username, String title, boolean published){
+        return postRepository.countByCategoryAndUsernameOrTitleAndPublished(category, username, title, published);
     }
 
 }

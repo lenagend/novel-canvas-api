@@ -20,7 +20,32 @@ public class TemplateDatabaseLoader {
             for (int i = 0; i < 100; i++){
                 LocalDateTime createdAt = baseDate.plusMinutes(i * 10);
                 LocalDateTime modifiedAt = createdAt;
-                mongo.save(new Post("" + i, "작품" + i, "제목" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
+                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
+            }
+            for (int i = 100; i < 200; i++){
+                LocalDateTime createdAt = baseDate.plusMinutes(i * 10);
+                LocalDateTime modifiedAt = createdAt;
+                mongo.save(new Post("" + i, "작품" + i, "sports", "스포츠게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
+            }
+            for (int i = 200; i < 300; i++){
+                LocalDateTime createdAt = baseDate.plusMinutes(i * 10);
+                LocalDateTime modifiedAt = createdAt;
+                mongo.save(new Post("" + i, "작품" + i, "politics", "정치게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
+            }
+            for (int i = 300; i < 400; i++){
+                LocalDateTime createdAt = baseDate.plusMinutes(i * 10);
+                LocalDateTime modifiedAt = createdAt;
+                mongo.save(new Post("" + i, "작품" + i, "stock", "주식게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
+            }
+            for (int i = 400; i < 500; i++){
+                LocalDateTime createdAt = baseDate.plusMinutes(i * 10);
+                LocalDateTime modifiedAt = createdAt;
+                mongo.save(new Post("" + i, "작품" + i, "hotDeal", "핫딜게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
+            }
+            for (int i = 500; i < 600; i++){
+                LocalDateTime createdAt = baseDate.plusMinutes(i * 10);
+                LocalDateTime modifiedAt = createdAt;
+                mongo.save(new Post("" + i, "작품" + i, "19", "19게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, modifiedAt, true));
             }
         };
     }

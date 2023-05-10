@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class Post {
     private @Id String id;
     private String novelId;
+    private String category;
     private String title;
     private String content;
     private String username;
