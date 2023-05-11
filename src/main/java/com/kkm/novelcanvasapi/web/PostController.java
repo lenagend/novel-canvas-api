@@ -5,6 +5,7 @@ import com.kkm.novelcanvasapi.dto.PostWithDetails;
 import com.kkm.novelcanvasapi.service.PostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,25 +25,23 @@ public class PostController {
     @GetMapping("/posts")
     public Flux<PostWithDetails> getPosts(@RequestParam int page, @RequestParam int size,
                                           @RequestParam String category,
-                                          @RequestParam(required = false, defaultValue = ".*") String username,
-                                          @RequestParam(required = false, defaultValue = ".*") String title,
+                                          @RequestParam(required = false, defaultValue = ".*") String searchQuery,
                                           @RequestParam(required = false) String startDate,
                                           @RequestParam(required = false) String endDate,
                                           @RequestParam String sortType) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        return postService.getPosts(pageable, category, username, title, true);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return postService.getPosts(pageable, category, searchQuery, searchQuery, true);
 
     }
 
 
     @GetMapping("/posts/count")
     public Mono<Long> getPostCount(@RequestParam String category,
-                                   @RequestParam(required = false, defaultValue = ".*") String username,
-                                   @RequestParam(required = false, defaultValue = ".*") String title,
+                                   @RequestParam(required = false, defaultValue = ".*") String searchQuery,
                                    @RequestParam(required = false) String startDate,
                                    @RequestParam(required = false) String endDate,
                                    @RequestParam String sortType) {
-            return postService.countPosts(category, username, title,true);
+            return postService.countPosts(category, searchQuery, searchQuery,true).doOnNext(System.out::println);
     }
 }
