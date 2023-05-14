@@ -10,19 +10,15 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Like {
     private @Id String id;
-    private String novelId;
-    private String category;
-    private String title;
-    private String content;
+    private String postId;
     private String username;
-    private String imageSrc;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-    private boolean published;
 
-    private Long viewCount;
-    private Long likeCount;
-    private Long commentCount;
+    public Like(String postId, String username, LocalDateTime createdAt) {
+        this.postId = postId;
+        this.username = username;
+        this.createdAt = createdAt;
+    }
 }

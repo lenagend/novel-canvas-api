@@ -9,13 +9,11 @@ import reactor.core.publisher.Mono;
 
 public interface PostRepository extends ReactiveCrudRepository<Post, String> {
 
-    @Query("{ 'category': ?0, 'published': ?3, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ] }")
+    @Query(value = "{ 'category': ?0, 'published': ?3, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ] }", fields = "{'content' : 0}")
     Flux<Post> findAllByCategoryAndPublishedAndUsernameOrTitle(Pageable pageable, String category, String username, String title, boolean published);
 
     @Query(value = "{ 'category': ?0, 'published': ?3, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ] }", count = true)
     Mono<Long> countByCategoryAndUsernameOrTitleAndPublished(String category, String username, String title, boolean published);
-
-
 
 }
 
