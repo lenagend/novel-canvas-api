@@ -78,4 +78,11 @@ public class PostService {
         Update update = new Update().inc("likeCount", -1);
         return mongoOperations.updateFirst(query, update, Post.class).then();
     }
+
+    public Mono<Long> countByUsername(String username, boolean published){return this.postRepository.countByUsernameAndPublished(username, published);}
+    public Mono<Long> countCommentByUsername(String username, boolean published){return likeRepository.countByUsername(username);}
+    public Mono<Long> countPostsLikedByUsername(String username) {
+        return likeRepository.countByUsername(username);
+    }
+
 }

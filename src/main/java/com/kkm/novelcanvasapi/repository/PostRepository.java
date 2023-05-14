@@ -15,6 +15,8 @@ public interface PostRepository extends ReactiveCrudRepository<Post, String> {
     @Query(value = "{ 'category': ?0, 'published': ?3, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ] }", count = true)
     Mono<Long> countByCategoryAndUsernameOrTitleAndPublished(String category, String username, String title, boolean published);
 
+    Mono<Long> countByUsernameAndPublished(String username, boolean published);
+
 }
 
 
