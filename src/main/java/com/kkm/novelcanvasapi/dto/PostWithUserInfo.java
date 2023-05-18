@@ -36,7 +36,7 @@ public class PostWithUserInfo {
         postWithUserInfo.setPublished(post.isPublished());
         postWithUserInfo.setViewCount(post.getViewCount());
         postWithUserInfo.setLikeCount(post.getLikeCount());
-        postWithUserInfo.setCommentCount(post.getLikeCount());
+        postWithUserInfo.setCommentCount(post.getCommentCount());
         return postWithUserInfo;
     }
 }

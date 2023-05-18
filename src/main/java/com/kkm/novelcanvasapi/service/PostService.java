@@ -2,9 +2,11 @@ package com.kkm.novelcanvasapi.service;
 
 import com.kkm.novelcanvasapi.domain.Like;
 import com.kkm.novelcanvasapi.domain.Post;
+import com.kkm.novelcanvasapi.domain.View;
 import com.kkm.novelcanvasapi.dto.PostWithUserInfo;
 import com.kkm.novelcanvasapi.repository.LikeRepository;
 import com.kkm.novelcanvasapi.repository.PostRepository;
+import com.kkm.novelcanvasapi.repository.ViewRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,15 +22,14 @@ import java.time.LocalDateTime;
 public class PostService {
     private final PostRepository postRepository;
 
-
     private final LikeRepository likeRepository;
 
-    private final ReactiveMongoOperations mongoOperations;
+    private final ViewRepository viewRepository;
 
-    public PostService(PostRepository postRepository, LikeRepository likeRepository, ReactiveMongoOperations mongoOperations) {
+    public PostService(PostRepository postRepository, LikeRepository likeRepository, ViewRepository viewRepository) {
         this.postRepository = postRepository;
         this.likeRepository = likeRepository;
-        this.mongoOperations = mongoOperations;
+        this.viewRepository = viewRepository;
     }
 
     public Mono<Post> savePost(Post post){return this.postRepository.save(post);}
@@ -54,30 +55,16 @@ public class PostService {
                 });
     }
 
-    public Mono<Void> incrementViewCount(String postId) {
-        Query query = new Query(Criteria.where("id").is(postId));
-        Update update = new Update().inc("viewCount", 1);
-        return mongoOperations.updateFirst(query, update, Post.class).then();
+    public Mono<View> incrementViewCount(String postId, String uniqueId) {
+        return this.viewRepository.save(new View(postId, uniqueId, LocalDateTime.now()));
     }
 
-    public Mono<Void> toggleLike(String postId, String username) {
+    public Mono<Like> toggleLike(String postId, String username) {
         return likeRepository.findByUsernameAndPostId(username, postId)
-                .flatMap(like -> likeRepository.delete(like).then(decrementLikeCountInPost(postId)))
-                .switchIfEmpty(likeRepository.save(new Like(postId, username, LocalDateTime.now()))
-                        .then(incrementLikeCountInPost(postId)));
+                .flatMap(like -> likeRepository.delete(like))
+                .switchIfEmpty(likeRepository.save(new Like(postId, username, LocalDateTime.now())));
     }
 
-    private Mono<Void> incrementLikeCountInPost(String postId) {
-        Query query = new Query(Criteria.where("id").is(postId));
-        Update update = new Update().inc("likeCount", 1);
-        return mongoOperations.updateFirst(query, update, Post.class).then();
-    }
-
-    private Mono<Void> decrementLikeCountInPost(String postId) {
-        Query query = new Query(Criteria.where("id").is(postId));
-        Update update = new Update().inc("likeCount", -1);
-        return mongoOperations.updateFirst(query, update, Post.class).then();
-    }
 
     public Mono<Long> countByUsername(String username, boolean published){return this.postRepository.countByUsernameAndPublished(username, published);}
     public Mono<Long> countCommentByUsername(String username, boolean published){return likeRepository.countByUsername(username);}

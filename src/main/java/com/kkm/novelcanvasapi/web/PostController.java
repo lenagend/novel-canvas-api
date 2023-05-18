@@ -1,6 +1,8 @@
 package com.kkm.novelcanvasapi.web;
 
+import com.kkm.novelcanvasapi.domain.View;
 import com.kkm.novelcanvasapi.dto.PostWithUserInfo;
+import com.kkm.novelcanvasapi.service.AuthenticationService;
 import com.kkm.novelcanvasapi.service.PostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,10 +14,13 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
-    private final PostService postService;
 
-    public PostController(PostService postService) {
+    private final PostService postService;
+    private final AuthenticationService authenticationService;
+
+    public PostController(PostService postService, AuthenticationService authenticationService) {
         this.postService = postService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping
@@ -47,7 +52,19 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/view")
-    public Mono<Void> incrementViewCount(@PathVariable String postId) {
-        return postService.incrementViewCount(postId);
+    public Mono<View> incrementViewCount(@PathVariable String postId, @RequestParam String uniqueId) {
+        return postService.incrementViewCount(postId, uniqueId);
+    }
+
+    @PutMapping("/{postId}/like")
+    public Mono<Void> toggleLike(@PathVariable String postId, @RequestHeader("Authorization") String authHeader) {
+       try {
+           String token = authHeader.replace("Bearer ", "");
+           String username = authenticationService.extractUsername(token);
+           return postService.toggleLike(postId, username);
+
+       } catch (Exception e){
+            return Mono.error(e);
+       }
     }
 }
