@@ -1,7 +1,7 @@
 package com.kkm.novelcanvasapi.web;
 
 import com.kkm.novelcanvasapi.domain.View;
-import com.kkm.novelcanvasapi.dto.PostWithUserInfo;
+import com.kkm.novelcanvasapi.dto.PostWithDetails;
 import com.kkm.novelcanvasapi.service.AuthenticationService;
 import com.kkm.novelcanvasapi.service.PostService;
 import org.springframework.data.domain.PageRequest;
@@ -24,12 +24,12 @@ public class PostController {
     }
 
     @GetMapping
-    public Flux<PostWithUserInfo> getPosts(@RequestParam int page, @RequestParam int size,
-                                           @RequestParam String category,
-                                           @RequestParam(required = false, defaultValue = ".*") String searchQuery,
-                                           @RequestParam(required = false) String startDate,
-                                           @RequestParam(required = false) String endDate,
-                                           @RequestParam String sortType) {
+    public Flux<PostWithDetails> getPosts(@RequestParam int page, @RequestParam int size,
+                                          @RequestParam String category,
+                                          @RequestParam(required = false, defaultValue = ".*") String searchQuery,
+                                          @RequestParam(required = false) String startDate,
+                                          @RequestParam(required = false) String endDate,
+                                          @RequestParam String sortType) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return postService.getPosts(pageable, category, searchQuery, searchQuery, true);
@@ -47,7 +47,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public Mono<PostWithUserInfo> getPost(@PathVariable String postId){
+    public Mono<PostWithDetails> getPost(@PathVariable String postId){
         return postService.getPost(postId);
     }
 
@@ -57,7 +57,7 @@ public class PostController {
     }
 
     @PutMapping("/{postId}/like")
-    public Mono<Void> toggleLike(@PathVariable String postId, @RequestHeader("Authorization") String authHeader) {
+    public Mono<Boolean> toggleLike(@PathVariable String postId, @RequestHeader("Authorization") String authHeader) {
        try {
            String token = authHeader.replace("Bearer ", "");
            String username = authenticationService.extractUsername(token);

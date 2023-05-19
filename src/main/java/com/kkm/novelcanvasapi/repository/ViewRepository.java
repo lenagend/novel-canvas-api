@@ -6,5 +6,6 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
 public interface ViewRepository extends ReactiveCrudRepository<View, String> {
-    Mono<Long> countByPostIdAndUniqueId(String postId, String uniqueId);
+    Mono<Long> countByPostId(String postId);
+    Mono<View> findByPostIdAndUniqueId(String postId, String uniqueId);
 }

@@ -21,8 +21,4 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean published;
-
-    private Long viewCount;
-    private Long likeCount;
-    private Long commentCount;
 }
