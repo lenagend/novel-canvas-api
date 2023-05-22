@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-public class ApiUserController {
+public class UserController {
 
     private final CustomReactiveUserDetailsService customReactiveUserDetailsService;
 
@@ -42,7 +42,7 @@ public class ApiUserController {
     private final PostService postService;
 
 
-    public ApiUserController(CustomReactiveUserDetailsService customReactiveUserDetailsService, AuthenticationService authenticationService, Validator userRegistrationDtoValidator, Validator userChangePasswordDtoValidator, UserInfoService userInfoService, PostService postService) {
+    public UserController(CustomReactiveUserDetailsService customReactiveUserDetailsService, AuthenticationService authenticationService, Validator userRegistrationDtoValidator, Validator userChangePasswordDtoValidator, UserInfoService userInfoService, PostService postService) {
         this.customReactiveUserDetailsService = customReactiveUserDetailsService;
         this.authenticationService = authenticationService;
         this.userRegistrationDtoValidator = userRegistrationDtoValidator;

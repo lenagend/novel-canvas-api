@@ -23,4 +23,8 @@ public class UserInfo {
     private Long likeCount;
     private LocalDateTime modifiedAt;
 
+    public UserInfo(String nickname, String profileImage) {
+        this.nickname = nickname;
+        this.profileImage = profileImage;
+    }
 }

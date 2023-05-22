@@ -6,6 +6,8 @@ import reactor.core.publisher.Mono;
 
 public interface LikeRepository extends ReactiveCrudRepository<Like, String> {
     Mono<Like> findByUsernameAndPostId(String username, String postId);
+    Mono<Like> findByUsernameAndCommentId(String username, String commentId);
     Mono<Long> countByUsername(String username);
-
+    Mono<Boolean> existsByPostIdAndUsername(String postId, String username);
+    Mono<Long> countByPostId(String postId);
 }

@@ -21,4 +21,22 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean published;
+
+    private Long viewCount;
+    private Long likeCount;
+    private Long commentCount;
+
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
+
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decrementLikeCount() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
 }

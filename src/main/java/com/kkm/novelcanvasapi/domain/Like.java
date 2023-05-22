@@ -13,11 +13,13 @@ import java.time.LocalDateTime;
 public class Like {
     private @Id String id;
     private String postId;
+    private String commentId;
     private String username;
     private LocalDateTime createdAt;
 
-    public Like(String postId, String username, LocalDateTime createdAt) {
+    public Like(String postId, String commentId, String username, LocalDateTime createdAt) {
         this.postId = postId;
+        this.commentId = commentId;
         this.username = username;
         this.createdAt = createdAt;
     }
