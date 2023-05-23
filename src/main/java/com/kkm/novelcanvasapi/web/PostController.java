@@ -28,6 +28,16 @@ public class PostController {
         this.authenticationService = authenticationService;
     }
 
+    private LocalDateTime parseToLocalDateTime(String dateTimeString) {
+        if (dateTimeString == null || dateTimeString.isEmpty()) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return LocalDateTime.parse(dateTimeString, formatter);
+    }
+
+
     @GetMapping("/posts")
     public Mono<ResponseEntity<Flux<PostWithUserInfo>>> getPosts(@RequestParam int page, @RequestParam int size,
                                                                  @RequestParam String category,
@@ -37,22 +47,16 @@ public class PostController {
                                                                  @RequestParam String sortType) {
 
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime startDateParsed = null, endDateParsed = null;
-
-            if (startDate != null) {
-                startDateParsed = LocalDateTime.parse(startDate, formatter);
-            }
-            if (endDate != null) {
-                endDateParsed = LocalDateTime.parse(endDate, formatter);
-            }
-
+            LocalDateTime startDateParsed = parseToLocalDateTime(startDate);
+            LocalDateTime endDateParsed = parseToLocalDateTime(endDate);
             Pageable pageable = PageRequest.of(page, size, Sort.by(sortType).descending());
+
             return Mono.just(ResponseEntity.ok(postService.getPosts(pageable, category, searchQuery, searchQuery, true, startDateParsed, endDateParsed)));
         } catch (Exception e) {
             return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
         }
     }
+
 
 
 
