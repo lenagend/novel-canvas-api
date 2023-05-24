@@ -28,30 +28,17 @@ public class PostController {
         this.authenticationService = authenticationService;
     }
 
-    private LocalDateTime parseToLocalDateTime(String dateTimeString) {
-        if (dateTimeString == null || dateTimeString.isEmpty()) {
-            return null;
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return LocalDateTime.parse(dateTimeString, formatter);
-    }
-
 
     @GetMapping("/posts")
     public Mono<ResponseEntity<Flux<PostWithUserInfo>>> getPosts(@RequestParam int page, @RequestParam int size,
                                                                  @RequestParam String category,
                                                                  @RequestParam(required = false, defaultValue = ".*") String searchQuery,
-                                                                 @RequestParam(required = false) String startDate,
-                                                                 @RequestParam(required = false) String endDate,
                                                                  @RequestParam String sortType) {
-
         try {
-            LocalDateTime startDateParsed = parseToLocalDateTime(startDate);
-            LocalDateTime endDateParsed = parseToLocalDateTime(endDate);
-            Pageable pageable = PageRequest.of(page, size, Sort.by(sortType).descending());
-
-            return Mono.just(ResponseEntity.ok(postService.getPosts(pageable, category, searchQuery, searchQuery, true, startDateParsed, endDateParsed)));
+            Sort sort = Sort.by(Sort.Direction.DESC, "createdDate")
+                    .and(Sort.by(Sort.Direction.DESC, sortType));
+            Pageable pageable = PageRequest.of(page, size, sort);
+            return Mono.just(ResponseEntity.ok(postService.getPosts(pageable, category, searchQuery, searchQuery, true)));
         } catch (Exception e) {
             return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
         }
@@ -63,8 +50,6 @@ public class PostController {
     @GetMapping("/posts/count")
     public Mono<ResponseEntity<Long>> getPostCount(@RequestParam String category,
                                                    @RequestParam(required = false, defaultValue = ".*") String searchQuery,
-                                                   @RequestParam(required = false) String startDate,
-                                                   @RequestParam(required = false) String endDate,
                                                    @RequestParam String sortType) {
         try {
             return postService.countPosts(category, searchQuery, searchQuery, true)

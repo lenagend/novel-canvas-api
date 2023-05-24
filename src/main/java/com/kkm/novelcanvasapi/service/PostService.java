@@ -50,22 +50,14 @@ public class PostService {
     }
 
 
-    public Flux<PostWithUserInfo> getPosts(Pageable pageable, String category, String username, String title,  boolean published, LocalDateTime startDate, LocalDateTime endDate) {
-        if(startDate == null || endDate == null) {
+    public Flux<PostWithUserInfo> getPosts(Pageable pageable, String category, String username, String title,  boolean published) {
             return this.postRepository.findAllByCategoryAndPublishedAndUsernameOrTitle(pageable, category, username, title, published)
+                    .doOnNext(posts -> System.out.println("1"))
                     .onErrorResume(e -> {
                         System.err.println("Error during findAllByCategoryAndPublishedAndUsernameOrTitle: " + e.getMessage());
                         return Flux.error(new RuntimeException("Could not get posts", e));
                     })
                     .concatMap(this::createPostWithUserInfo);
-        } else {
-            return this.postRepository.findAllByCategoryAndPublishedAndUsernameOrTitle(pageable, category, username, title, published, startDate, endDate)
-                    .onErrorResume(e -> {
-                        System.err.println("Error during findAllByCategoryAndPublishedAndUsernameOrTitle: " + e.getMessage());
-                        return Flux.error(new RuntimeException("Could not get posts", e));
-                    })
-                    .concatMap(this::createPostWithUserInfo);
-        }
     }
 
 

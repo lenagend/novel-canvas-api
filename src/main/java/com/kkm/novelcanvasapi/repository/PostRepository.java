@@ -17,13 +17,6 @@ public interface PostRepository extends ReactiveCrudRepository<Post, String> {
     @Query(value = "{ 'category': ?0, 'published': ?3, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ] }", count = true)
     Mono<Long> countByCategoryAndUsernameOrTitleAndPublished(String category, String username, String title, boolean published);
 
-    @Query(value = "{ 'category': ?0, 'published': ?4, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ], 'createdAt': { $gte: ?5, $lte: ?6 } }", fields = "{'content' : 0}")
-    Flux<Post> findAllByCategoryAndPublishedAndUsernameOrTitle(Pageable pageable, String category, String username, String title, boolean published, LocalDateTime startDate, LocalDateTime endDate);
-
-    @Query(value = "{ 'category': ?0, 'published': ?4, $or: [ { 'username': ?1 }, { 'title': { $regex: ?2 } } ], 'createdAt': { $gte: ?5, $lte: ?6 } }", count = true)
-    Mono<Long> countByCategoryAndUsernameOrTitleAndPublished(String category, String username, String title, boolean published, LocalDateTime startDate, LocalDateTime endDate);
-
-
     Mono<Long> countByUsernameAndPublished(String username, boolean published);
 
 }

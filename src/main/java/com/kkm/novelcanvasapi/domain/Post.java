@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,12 +20,17 @@ public class Post {
     private String username;
     private String imageSrc;
     private LocalDateTime createdAt;
+    private LocalDate createdDate;
     private LocalDateTime modifiedAt;
     private boolean published;
 
     private Long viewCount;
     private Long likeCount;
     private Long commentCount;
+
+    public void prePersist() {
+        createdDate = createdAt.toLocalDate();
+    }
 
     public void incrementViewCount() {
         this.viewCount++;
