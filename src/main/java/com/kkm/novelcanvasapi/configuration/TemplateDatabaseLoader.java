@@ -28,24 +28,27 @@ public class TemplateDatabaseLoader {
                 LocalDateTime createdAt = baseDateTime.plusMinutes(i * 10);
                 LocalDate createdDate = createdAt.toLocalDate();
                 LocalDateTime modifiedAt = createdAt;
-                Long likeCount = (long) (Math.random() * 10); // generate random number of likes
-                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, createdDate, modifiedAt, true, likeCount, 0L, 0L));
+                Long viewCount = (long) (Math.random() * 10);
+                Long likeCount = (long) (Math.random() * 10);
+                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, createdDate, modifiedAt, true, viewCount, likeCount, 0L));
             }
 
             for (int i = 10; i < 20; i++){
                 LocalDateTime createdAt = baseDateTime.plusDays(1).plusMinutes(i * 10);
                 LocalDate createdDate = createdAt.toLocalDate();
                 LocalDateTime modifiedAt = createdAt;
+                Long viewCount = (long) (Math.random() * 10);
                 Long likeCount = (long) (Math.random() * 10); // generate random number of likes
-                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, createdDate, modifiedAt, true, likeCount, 0L, 0L));
+                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, createdDate, modifiedAt, true, viewCount, likeCount, 0L));
             }
 
             for (int i = 20; i < 30; i++){
                 LocalDateTime createdAt = baseDateTime.plusDays(2).plusMinutes(i * 10);
                 LocalDate createdDate = createdAt.toLocalDate();
                 LocalDateTime modifiedAt = createdAt;
+                Long viewCount = (long) (Math.random() * 10);
                 Long likeCount = (long) (Math.random() * 10); // generate random number of likes
-                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, createdDate, modifiedAt, true, likeCount, 0L, 0L));
+                mongo.save(new Post("" + i, "작품" + i, "humor", "유머게시판 게시글" + i,  "testContent" + i,  "testuser1@gmail.com", "imageSrc", createdAt, createdDate, modifiedAt, true, viewCount, likeCount, 0L));
             }
 
             for (int i = 100; i < 200; i++){
